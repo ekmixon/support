@@ -39,8 +39,7 @@ def base_url(toml_data):
 
 def mdm_vendor(toml_data):
     """Returns the MDM vendor from the TOML config"""
-    vendor = toml_data["mdm_info"]["vendor"]
-    return vendor
+    return toml_data["mdm_info"]["vendor"]
 
 
 def build_api_headers(
@@ -81,8 +80,7 @@ def build_api_headers(
 def log_configuration(toml_data):
     """Pull the default log configuration set in the mdm-info.foml file."""
     try:
-        log_file_path = toml_data["log_config"]["log_file_path"]
-        return log_file_path
+        return toml_data["log_config"]["log_file_path"]
     except KeyError as error:
         default_log_path = pathlib.Path("/Library").joinpath("Logs")
         logging.info("Log file path is not configured: %s", error)

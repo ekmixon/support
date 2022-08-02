@@ -126,8 +126,7 @@ def load_input_file(input_file):
     data = []
     with open(input_file, mode="r") as csv_file:
         reader = csv.DictReader(csv_file)
-        for line in reader:
-            data.append(line)
+        data.extend(iter(reader))
     return data
 
 
@@ -202,7 +201,7 @@ def generate_device_update_payload(input_record):
         # and asset_tag keys cannot be empty in the in the json payload sent to Kandji. If these
         # keys are sent as empty or NULL Kandji will return an error.
         if value != "" and key not in ["serial_number", "blueprint_name", "username"]:
-            payload.update([(key, value)])
+            payload |= [(key, value)]
 
     return json.dumps(payload)
 
@@ -217,11 +216,12 @@ def update_device_inventory_record(payload, device_id):
 
         try:
             response = requests.patch(
-                BASE_URL + f"devices/{device_id}/",
+                f"{BASE_URL}devices/{device_id}/",
                 headers=HEADERS,
                 data=payload,
                 timeout=30,
             )
+
 
             # Store the HTTP status code
             response_code = response.status_code
@@ -308,7 +308,7 @@ def main():
     # If the list contains any items, we want to display those items to the end-user.
     # In this case we want to display any serial numbers in the input file that could
     # not be found in Kandji
-    if len(not_found) > 0:
+    if not_found:
         print("Device serial numbers not found in Kandji:")
         for device in not_found:
             print(device)

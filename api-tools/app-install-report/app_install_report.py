@@ -5,6 +5,7 @@ Return a report of all apps, app versions, and number of installationss from a
 specified Kondji instance.
 """
 
+
 ###################################################################################################
 # Created by Matt Wilson | Senior Solutions Engineer
 #
@@ -93,7 +94,10 @@ HEADERS = {
 
 
 # Report name
-REPORT_NAME = "app_install_report_" + datetime.today().strftime("%Y%m%d") + ".csv"
+REPORT_NAME = (
+    "app_install_report_" + datetime.now().strftime("%Y%m%d") + ".csv"
+)
+
 
 # Current working directory
 HERE = pathlib.Path("__file__").parent
